@@ -49,14 +49,14 @@ if(params.inertia){
 
 
 const Values = {
-    chisato: {
+    kunkunOne: {
         r: 1, // 角度
         y: 40, // 高度
         t: 0, // 垂直速度
         w: 0, // 横向速度
         d: 0.99 // 衰减
     },
-    takina: {
+    kunkunTwo: {
         r: 12, // 角度
         y: 2, // 高度
         t: 0, // 垂直速度
@@ -78,8 +78,8 @@ if(params.decay){
 const voiceButton = document.querySelector('.set-voice');
 
 const Voices = {
-    chisato: new Audio('./jntm.mp3'),
-    takina: new Audio('./ngm.mp3'),
+    kunkunOne: new Audio('./jntm.mp3'),
+    kunkunTwo: new Audio('./ngm.mp3'),
 
     isMute: true
 };
@@ -87,8 +87,8 @@ voiceButton.setAttribute(
     'data-active',
     Voices.isMute
 );
-Voices.takina.volume = Voices.chisato.volume = 0.8;
-Voices.takina.muted = Voices.chisato.muted = true;
+Voices.kunkunTwo.volume = Voices.kunkunOne.volume = 0.8;
+Voices.kunkunTwo.muted = Voices.kunkunOne.muted = true;
 
 const toggleVoiceMute = () => {
     Voices.isMute = voiceButton.getAttribute('data-active') !== 'true';
@@ -96,7 +96,7 @@ const toggleVoiceMute = () => {
         'data-active',
         Voices.isMute
     );
-    Voices.takina.muted = Voices.chisato.muted = Voices.isMute;
+    Voices.kunkunTwo.muted = Voices.kunkunOne.muted = Voices.isMute;
 };
 
 
@@ -107,7 +107,7 @@ const deepCopy = v => typeof window.structuredClone === 'function'
     : JSON.parse(JSON.stringify(v));
 
 el.classList.add(params.v);
-let v = deepCopy(Values[params.v] || Values['takina']);
+let v = deepCopy(Values[params.v] || Values['kunkunTwo']);
 
 let width;
 let height;
@@ -294,7 +294,7 @@ el.onmousedown = e=>{
     const _downPageY = pageY;
 
     // 确保通过用户触发事件获得 audio 播放授权
-    Voices.takina.muted = Voices.chisato.muted = Voices.isMute;
+    Voices.kunkunTwo.muted = Voices.kunkunOne.muted = Voices.isMute;
 
     document.onmouseup = e=>{
         e.preventDefault();
@@ -329,7 +329,7 @@ el.ontouchstart = e=>{
     const _downPageY = pageY;
 
     // 确保通过用户触发事件获得 audio 播放授权
-    Voices.takina.muted = Voices.chisato.muted = Voices.isMute;
+    Voices.kunkunTwo.muted = Voices.kunkunOne.muted = Voices.isMute;
 
     document.ontouchend = e=>{
         document.ontouchmove = null;
@@ -360,25 +360,25 @@ el.ontouchstart = e=>{
 const playVoice = () => {
     if (Voices.isMute) return;
     // console.log({ r: v.r, y: v.y })
-    if (el.classList.contains('chisato')) {
+    if (el.classList.contains('kunkunOne')) {
         if (
             // 'nice chin~a~na~go~' 经验值
             Math.abs(v.r) <= 4
             && Math.abs(v.y) >= 20
         ) {
             console.log('%cchin~a~na~go~','color:#FED;background-color:#C34;padding:2px 4px;');
-            Voices.chisato.play();
+            Voices.kunkunOne.play();
         };
     } else {
-        // console.log(  v.r >= Values.takina.r
+        // console.log(  v.r >= Values.kunkunTwo.r
         //     && (Math.abs(v.y) <= 12 || v.r >= 3 * Math.abs(v.y)));
         if (
             // 'nice sakana~' 经验值
-            v.r >= Values.takina.r
+            v.r >= Values.kunkunTwo.r
             
         ) {
             console.log('%csakana~','color:#CCC;background-color:#235;padding:2px 4px;');
-            Voices.takina.play();
+            Voices.kunkunTwo.play();
         };
     };
 };
@@ -466,14 +466,14 @@ const triggerMagic = _=>{
 // setOrientationListener();
 
 const switchValue = _=>{
-    el.classList.toggle('chisato');
+    el.classList.toggle('kunkunOne');
 
-    if(el.classList.contains('chisato')){
-        v = deepCopy(Values['chisato']);
-        params.v = 'chisato';
+    if(el.classList.contains('kunkunOne')){
+        v = deepCopy(Values['kunkunOne']);
+        params.v = 'kunkunOne';
     }else{
-        v = deepCopy(Values['takina']);
-        params.v = 'takina';
+        v = deepCopy(Values['kunkunTwo']);
+        params.v = 'kunkunTwo';
     }
     if(!running){
         running = true;
@@ -492,11 +492,11 @@ window.addEventListener('resize',resize);
 
 
 // console.log(
-//     '%c錦木千束 https://lab.magiconch.com/sakana/?v=chisato',
+//     '%c錦木千束 https://lab.magiconch.com/sakana/?v=kunkunOne',
 //     'color:#FED;background-color:#C34;padding:2px 4px;',
 // );
 // console.log(
-//     '%c井ノ上たきな https://lab.magiconch.com/sakana/?v=takina',
+//     '%c井ノ上たきな https://lab.magiconch.com/sakana/?v=kunkunTwo',
 //     'color:#CCC;background-color:#235;padding:2px 4px;',
 // );
 
